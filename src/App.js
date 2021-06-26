@@ -1,4 +1,4 @@
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
 import "./App.css";
 import { UserProvider } from "./firebase/UserProvider";
 import Login from "./pages/Login";
@@ -26,6 +26,9 @@ function App() {
               path="/exercises/:name"
               component={Exercises}
             />
+            <Route exact path="/">
+              <Redirect to="/login" />
+            </Route>
           </Switch>
         </div>
       </BrowserRouter>

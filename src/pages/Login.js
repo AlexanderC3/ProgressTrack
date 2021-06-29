@@ -68,7 +68,11 @@ function Login(props) {
           <div className="ui card login-card">
             <div className="content login-content">
               <h4 className="bannerTitle">Login</h4>
-              <form className={formClassName} onSubmit={handleSubmit(onSubmit)}>
+              <form
+                className={formClassName}
+                onSubmit={handleSubmit(onSubmit)}
+                style={{ width: "90%", maxWidth: "400px", margin: "auto" }}
+              >
                 <div className="input-div login-div one">
                   <div className="i">
                     <i className="fas fa-user"></i>

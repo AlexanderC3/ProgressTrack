@@ -52,6 +52,7 @@ function Signup(props) {
 
   window.addEventListener("load", inputFocus);
   window.addEventListener("click", inputFocus);
+  window.addEventListener("mouseover", inputFocus);
 
   return (
     <section className="banner login">
@@ -59,7 +60,11 @@ function Signup(props) {
         <div className="login-container">
           <div className="ui card login-card">
             <div className="content login-content">
-              <form className={formClassName} onSubmit={handleSubmit(onSubmit)}>
+              <form
+                className={formClassName}
+                onSubmit={handleSubmit(onSubmit)}
+                style={{ width: "90%", maxWidth: "400px", margin: "auto" }}
+              >
                 <div className="input-div login-div one">
                   <div className="i">
                     <i className="fas fa-user"></i>

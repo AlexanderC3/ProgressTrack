@@ -10,7 +10,7 @@ const Navbar = () => {
   var dashboardRef = "";
 
   if (!!user) {
-    dashboardRef = `/dashboard`;
+    dashboardRef = `/exercises`;
   }
 
   const logoutUser = async () => {

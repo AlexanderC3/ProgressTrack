@@ -20,3 +20,15 @@ export const addRegistration = async (exercise, user) => {
   // write to CLoud Firestore
   return docRef.add(exercise);
 };
+
+export const delReg = async (reg, user) => {
+  // get a reference to the firestore document
+  const docRef = firestore
+    .collection("users")
+    .doc(user)
+    .collection("registrations")
+    .doc(reg);
+
+  // write to CLoud Firestore
+  return docRef.delete();
+};

@@ -1,87 +1,150 @@
 import React, { useEffect, useState } from "react";
 import { firestore } from "../firebase/config";
-import { Link } from "react-router-dom";
+import { useSession } from "../firebase/UserProvider";
+import MaterialTable from "material-table";
+import moment from "moment";
+import { delReg } from "../firebase/functions";
 
 const Dashboard = () => {
-  const [exercises, setExcercises] = useState([]);
+  const [regs, setRegs] = useState([]);
+  const { user } = useSession();
 
   useEffect(() => {
-    const exercisesRef = firestore.collection("exercises").orderBy("name");
+    const userRef = firestore
+      .collection("users")
+      .doc(user.uid)
+      .collection("registrations")
+      .orderBy("date", "desc");
 
-    const unsubscribe = exercisesRef.onSnapshot((querySnapshot) => {
-      const exercisesList = querySnapshot.docs.map((doc) => ({
+    const unsubscribe = userRef.onSnapshot((querySnapshot) => {
+      const registrations = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      setExcercises(exercisesList);
+      for (let i = 0; i < registrations.length; i++) {
+        const date = registrations[i].date.toDate().toString();
+        registrations[i].date = moment(date).format("D MMM YYYY, H:mm:ss");
+      }
+      setRegs(registrations);
     });
     return unsubscribe;
-  }, []);
+  }, [user.uid]);
 
-  const toLowercase = (string) => {
-    return string.toLowerCase();
+  const deleteReg = async (id) => {
+    try {
+      await delReg(id, user.uid);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div style={{ marginTop: "8em" }}>
-      <div className="row" style={{ width: "85%", margin: "0 auto" }}>
-        {exercises
-          ? exercises.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  className="col-lg-4 col-sm-6"
-                  style={{
-                    padding: "15px",
-                    borderRadius: "15px",
-                  }}
-                >
-                  <Link
-                    to={{
-                      pathname: `/exercises/${toLowercase(item.name)}`,
-                    }}
-                  >
-                    <div
-                      className="catCard"
-                      style={{
-                        position: "relative",
-                        borderRadius: "15px",
-                        background:
-                          "linear-gradient(145deg, #f53803 0%, #ff4e00 100%)",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <h3 className="catHeader">{item.name}</h3>
-                      <img
-                        src={item.img}
-                        style={{
-                          width: "100%",
-                          borderRadius: "15px",
-                          opacity: ".9",
-                        }}
-                        alt={item.name}
-                        className="catImg"
-                      />
-                      <div className="catInfo">
-                        <h4 className="muscleHeader">Target muscles</h4>
-                        {item.muscles
-                          ? item.muscles.map((muscle, index) => {
-                              return (
-                                <div key={index}>
-                                  <span>{muscle}</span>
-                                </div>
-                              );
-                            })
-                          : ""}
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              );
-            })
-          : ""}
-      </div>
+    <div style={{ marginTop: "8em", width: "80%", margin: "8em auto" }}>
+      <MaterialTable
+        title={"Registrations"}
+        data={regs}
+        columns={[
+          {
+            title: "Category",
+            field: "catName",
+            cellStyle: {
+              textAlign: "center",
+            },
+            lookup: {
+              Abs: "Abs",
+              Arms: "Arms",
+              Back: "Back",
+              Chest: "Chest",
+              Legs: "Legs",
+              Shoulders: "Shoulders",
+            },
+            sorting: false,
+          },
+          {
+            title: "Exercise",
+            field: "exerciseName",
+            cellStyle: {
+              textAlign: "center",
+            },
+          },
+          {
+            title: "Sets",
+            field: "",
+            cellStyle: {
+              textAlign: "center",
+            },
+            sorting: false,
+            render: (rowData) => (
+              <div>
+                {rowData.reps
+                  ? rowData.reps.map((item, index) => {
+                      return (
+                        <p key={index}>
+                          <span style={{ fontSize: "12px" }}>&#9679; </span>
+                          {item.totalReps} sets with {item.weight}kg
+                        </p>
+                      );
+                    })
+                  : ""}
+              </div>
+            ),
+          },
+          {
+            title: "Date",
+            field: "date",
+            filtering: false,
+            cellStyle: {
+              textAlign: "center",
+            },
+            sorting: false,
+          },
+          {
+            title: "Delete",
+            field: "",
+            sorting: false,
+            cellStyle: {
+              textAlign: "center",
+              width: 10,
+              maxWidth: 10,
+            },
+            filtering: false,
+            render: (rowData) => (
+              <button
+                style={{ width: "auto" }}
+                className="table-btn table-btn-delete"
+                onClick={() => deleteReg(rowData.id)}
+              >
+                <i className="fas fa-trash-alt"></i>
+              </button>
+            ),
+          },
+        ]}
+        options={{
+          draggable: false,
+          exportButton: {
+            csv: true,
+            pdf: false,
+          },
+          exportAllData: true,
+          search: true,
+          filtering: true,
+          headerStyle: {
+            backgroundColor: "#cecaca",
+            color: "#FFF",
+          },
+          emptyRowsWhenPaging: false,
+          paging: true,
+          pageSize: 50,
+          pageSizeOptions: [
+            10,
+            20,
+            25,
+            50,
+            { value: regs.length, label: "All" },
+          ],
+        }}
+      />
     </div>
   );
 };

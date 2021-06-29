@@ -29,12 +29,12 @@ section {
 
 ::-moz-selection {
   color: white !important;
-  background: #dd7b5da1 !important;
+  background: #9a424271 !important;
 }
 
 ::selection {
   color: white !important;
-  background: #dd7b5da1 !important;
+  background: #9a424271 !important;
 }
 
 body {
@@ -3077,4 +3077,71 @@ input:-webkit-autofill {
   border: 2px solid #9a4242a6;
   color: white;
   background: #612929d0;
+}
+
+.MuiTableRow-root:hover {
+  background-color: #9a424231;
+}
+
+.MuiTableRow-root {
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+.MuiInput-underline:after {
+  border-bottom: 2px solid rgb(0, 0, 0) !important;
+}
+
+.MuiCheckbox-colorSecondary.Mui-checked {
+  color: #1e1e1e !important;
+}
+
+.MuiIconButton-colorSecondary {
+  color: #1e1e1e !important;
+}
+
+.MuiTableBody-root a {
+  text-decoration: none;
+  color: black;
+}
+
+.MuiTableCell-alignLeft:nth-child(1) a {
+  text-decoration: underline !important;
+  color: gray !important;
+}
+
+.MuiTableRow-footer {
+  background: white !important;
+}
+
+.MuiTableCell-paddingCheckbox {
+  color: #aca585 !important;
+}
+
+.MuiTableCell-head {
+  background: #6d3434ed !important;
+  text-align: center !important;
+}
+
+.MuiTableSortLabel-root:hover {
+  color: white !important;
+  opacity: 0.6 !important;
+}
+
+.MuiTableSortLabel-root.MuiTableSortLabel-active {
+  color: white !important;
+  opacity: 1 !important;
+}
+
+.MuiTableSortLabel-root.MuiTableSortLabel-active.MuiTableSortLabel-root.MuiTableSortLabel-active
+  .MuiTableSortLabel-icon {
+  color: white !important;
+}
+
+.MuiTableBody-root tr:nth-child(1):hover {
+  background: white !important;
+}
+
+.MuiTableCell-body .MuiFormControl-root {
+  width: 100% !important;
 }

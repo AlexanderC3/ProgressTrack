@@ -3,6 +3,7 @@ import { firestore } from "../firebase/config";
 import { useForm } from "react-hook-form";
 import { addRegistration } from "../firebase/functions";
 import { useSession } from "../firebase/UserProvider";
+import { useParams } from "react-router-dom";
 
 export const ExerciseDetail = (props) => {
   const [exerciseInfo, setExerciseInfo] = useState([]);
@@ -10,6 +11,10 @@ export const ExerciseDetail = (props) => {
   const { register, handleSubmit } = useForm();
   const { cat, exercises } = props;
   const { user } = useSession();
+  const params = useParams();
+
+  var catName = params.name;
+  catName = catName.charAt(0).toUpperCase() + catName.slice(1);
 
   useEffect(() => {
     const catRef = firestore
@@ -64,7 +69,9 @@ export const ExerciseDetail = (props) => {
     try {
       var regData = {};
       regData.cat = cat;
+      regData.catName = catName;
       regData.exercise = exerciseInfo.id;
+      regData.exerciseName = exerciseInfo.name;
       regData.reps = repsweightArray;
       regData.date = new Date();
       await addRegistration(regData, user.uid);
@@ -143,6 +150,7 @@ export const ExerciseDetail = (props) => {
           : ""}
         {totalSets > 0 ? <button type="submit">Submit</button> : ""}
       </form>
+      <br />
     </div>
   );
 };

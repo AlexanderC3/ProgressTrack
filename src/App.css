@@ -3079,6 +3079,18 @@ input:-webkit-autofill {
   background: #612929d0;
 }
 
+.MuiPickersToolbar-toolbar {
+  background: #612929 !important;
+}
+
+.MuiPickersDay-daySelected {
+  background: #612929 !important;
+}
+
+.MuiButton-textPrimary {
+  color: #612929 !important;
+}
+
 .MuiTableRow-root:hover {
   background-color: #9a424231;
 }

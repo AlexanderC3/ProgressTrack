@@ -4,6 +4,7 @@ import { useSession } from "../firebase/UserProvider";
 import MaterialTable from "material-table";
 import moment from "moment";
 import { delReg } from "../firebase/functions";
+import { CustomDatePicker } from "../components/CustomDatePicker";
 
 const Dashboard = () => {
   const [regs, setRegs] = useState([]);
@@ -93,7 +94,9 @@ const Dashboard = () => {
           {
             title: "Date",
             field: "date",
-            filtering: false,
+            type: "date",
+            dateSetting: { locale: "ko-KR" },
+            filterComponent: (props) => <CustomDatePicker {...props} />,
             cellStyle: {
               textAlign: "center",
             },

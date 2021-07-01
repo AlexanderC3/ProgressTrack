@@ -11,7 +11,7 @@ function Signup(props) {
   const { user } = useSession();
 
   if (user !== null) {
-    props.history.push(`/dashboard`);
+    props.history.push(`/exercises`);
   }
 
   const onSubmit = async (data) => {
@@ -24,7 +24,7 @@ function Signup(props) {
       setLoading(false);
     } finally {
       setLoading(false);
-      history.push("/succes");
+      history.push("/exercises");
       reset();
     }
   };

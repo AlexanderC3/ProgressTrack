@@ -1,84 +1,181 @@
 import React, { useEffect, useState } from "react";
-import { useSession } from "../firebase/UserProvider";
 import { firestore } from "../firebase/config";
+import { useSession } from "../firebase/UserProvider";
+import MaterialTable from "material-table";
+import moment from "moment";
+import { delReg } from "../firebase/functions";
+import { CustomDatePicker } from "../components/CustomDatePicker";
 import { useHistory } from "react-router-dom";
 
 const Profile = () => {
+  const [regs, setRegs] = useState([]);
   const { user } = useSession();
   const history = useHistory();
-  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     const userRef = firestore
       .collection("users")
-      .where("email", "==", user.email);
+      .doc(user.uid)
+      .collection("registrations")
+      .orderBy("date", "desc");
 
     const unsubscribe = userRef.onSnapshot((querySnapshot) => {
-      const users = querySnapshot.docs.map((doc) => ({
+      const registrations = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      const usersRef = firestore.collection("users");
-
-      usersRef.onSnapshot((querySnapshot) => {
-        const usersList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        for (let i = 0; i < users[0].friends.length; i++) {
-          for (let j = 0; j < usersList.length; j++) {
-            if (users[0].friends[i] === usersList[j].id) {
-              users[0].friends[i] =
-                usersList[j].firstname + " " + usersList[j].lastname;
-            }
-          }
-        }
-        setTimeout(() => {
-          setFriends(users[0].friends);
-        }, 200);
-      });
+      for (let i = 0; i < registrations.length; i++) {
+        const date = registrations[i].date.toDate().toString();
+        registrations[i].date = moment(date).format("D MMM YYYY, H:mm:ss");
+      }
+      setRegs(registrations);
     });
     return unsubscribe;
-  }, [user.email]);
+  }, [user.uid]);
 
-  const goBack = () => {
-    history.goBack();
+  const deleteReg = async (id) => {
+    try {
+      await delReg(id, user.uid);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div
-      className="add-form-container"
-      style={{
-        maxWidth: 960,
-        margin: "50px auto",
-        marginTop: "80px",
-      }}
-    >
-      My profile
-      <button
-        onClick={goBack}
-        style={{
-          marginTop: "28px",
-          padding: "5px 10px",
-          background: "#EDEAEA",
-          color: "black",
-          borderRadius: "7px",
-          fontSize: "17px",
-        }}
-      >
+    <div style={{ marginTop: "7em", width: "80%", margin: "8em auto" }}>
+      <h3 style={{ paddingBottom: ".3em" }}>Registrations overview</h3>
+      <button onClick={() => history.goBack()} style={{ background: "none" }}>
         Go back
       </button>
-      <p>Your user id: {user.uid}</p>
-      {friends
-        ? friends.map((item, index) => {
-            return (
-              <div key={index}>
-                <p>{item}</p>
+      <MaterialTable
+        style={{ marginTop: "1.5em" }}
+        title={"Registrations"}
+        data={regs}
+        columns={[
+          {
+            title: "Category",
+            field: "catName",
+            lookup: {
+              Abs: "Abs",
+              Arms: "Arms",
+              Back: "Back",
+              Chest: "Chest",
+              Legs: "Legs",
+              Shoulders: "Shoulders",
+            },
+            sorting: false,
+            cellStyle: {
+              textAlign: "center",
+              width: 200,
+              minWidth: 200,
+            },
+            headerStyle: {
+              width: 200,
+              minWidth: 200,
+            },
+          },
+          {
+            title: "Exercise",
+            field: "exerciseName",
+            cellStyle: {
+              textAlign: "center",
+              width: 200,
+              minWidth: 200,
+            },
+            headerStyle: {
+              width: 200,
+              minWidth: 200,
+            },
+          },
+          {
+            title: "Sets",
+            field: "",
+            cellStyle: {
+              textAlign: "center",
+              width: 200,
+              minWidth: 200,
+            },
+            headerStyle: {
+              width: 200,
+              minWidth: 200,
+            },
+            sorting: false,
+            render: (rowData) => (
+              <div>
+                {rowData.reps
+                  ? rowData.reps.map((item, index) => {
+                      return (
+                        <p key={index}>
+                          <span style={{ fontSize: "12px" }}>&#9679; </span>
+                          {item.totalReps} sets with {item.weight}kg
+                        </p>
+                      );
+                    })
+                  : ""}
               </div>
-            );
-          })
-        : ""}
+            ),
+          },
+          {
+            title: "Date",
+            field: "date",
+            type: "date",
+            dateSetting: { locale: "ko-KR" },
+            filterComponent: (props) => <CustomDatePicker {...props} />,
+            cellStyle: {
+              textAlign: "center",
+              width: 200,
+              minWidth: 200,
+            },
+            headerStyle: {
+              width: 200,
+              minWidth: 200,
+            },
+            sorting: false,
+          },
+          {
+            title: "Delete",
+            field: "",
+            sorting: false,
+            cellStyle: {
+              textAlign: "center",
+            },
+            maxWidth: "70px",
+            minWidht: "70px",
+            filtering: false,
+            render: (rowData) => (
+              <button
+                style={{ width: "auto" }}
+                className="table-btn table-btn-delete tableButton"
+                onClick={() => deleteReg(rowData.id)}
+              >
+                <i className="fas fa-trash-alt"></i>
+              </button>
+            ),
+          },
+        ]}
+        options={{
+          draggable: false,
+          exportButton: false,
+          exportAllData: true,
+          search: true,
+          filtering: true,
+          headerStyle: {
+            backgroundColor: "#cecaca",
+            color: "#FFF",
+          },
+          emptyRowsWhenPaging: false,
+          paging: true,
+          pageSize: 50,
+          pageSizeOptions: [
+            10,
+            20,
+            25,
+            50,
+            { value: regs.length, label: "All" },
+          ],
+        }}
+      />
     </div>
   );
 };

@@ -29,12 +29,12 @@ section {
 
 ::-moz-selection {
   color: white !important;
-  background: #9a424271 !important;
+  background: #6d3434be !important;
 }
 
 ::selection {
   color: white !important;
-  background: #9a424271 !important;
+  background: #6d3434be !important;
 }
 
 body {
@@ -2930,9 +2930,20 @@ input:-webkit-autofill:active {
 }
 /*Additionally, you can use this to change the text color:*/
 
+.datepicker input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255) inset !important;
+}
+
 /*Change text in autofill textbox*/
 input:-webkit-autofill {
   -webkit-text-fill-color: white !important;
+}
+
+.datepicker input:-webkit-autofill {
+  -webkit-text-fill-color: black !important;
 }
 
 .bannerTitle {
@@ -3156,4 +3167,13 @@ input:-webkit-autofill {
 
 .MuiTableCell-body .MuiFormControl-root {
   width: 100% !important;
+}
+
+.tableButton {
+  border: none;
+  background: none;
+  color: #6d3434ed;
+  margin-left: 20%;
+  font-size: 1.2em;
+  transition: all 0.5s ease-in;
 }

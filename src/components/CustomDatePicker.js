@@ -12,6 +12,7 @@ export const CustomDatePicker = (props) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <KeyboardDatePicker
+        className="datepicker"
         margin="normal"
         id="date-picker-dialog"
         label="Pick a date"

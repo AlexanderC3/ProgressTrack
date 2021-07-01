@@ -12,7 +12,7 @@ function Login(props) {
   const { user } = useSession();
 
   if (user !== null) {
-    props.history.push(`/dashboard`);
+    props.history.push(`/exercises`);
   }
 
   const onSubmit = async (data) => {
@@ -31,7 +31,7 @@ function Login(props) {
     }
 
     if (user) {
-      props.history.push(`/dashboard`);
+      props.history.push(`/exercises`);
     } else {
       setLoading(false);
     }

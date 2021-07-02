@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import ActiveRedirect from "./router/ActiveRedirect";
 import Exercises from "./pages/Exercises";
 import Categories from "./pages/Categories";
+import Overview from "./pages/Overview";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/login" component={Login} />
             <ActiveRedirect exact path="/profile" component={Profile} />
+            <ActiveRedirect exact path="/overview" component={Overview} />
             <ActiveRedirect exact path="/exercises" component={Categories} />
             <ActiveRedirect
               exact

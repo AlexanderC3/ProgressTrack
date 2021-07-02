@@ -3072,6 +3072,18 @@ input:-webkit-autofill {
   outline: none;
 }
 
+.goBackButton {
+  padding: 2px 5px;
+  border: 2px solid #612929ed;
+  margin: 0 5px;
+  min-width: 120px;
+  background: #612929ed;
+  color: white;
+  cursor: pointer;
+  border-radius: 15px;
+  transition: all 0.5s ease-in;
+}
+
 .formButton {
   padding: 2px 5px;
   border: 2px solid #612929ed;
@@ -3176,4 +3188,10 @@ input:-webkit-autofill {
   margin-left: 20%;
   font-size: 1.2em;
   transition: all 0.5s ease-in;
+}
+
+.profileInput {
+  background: #6d34349a;
+  color: white;
+  border: 2px solid #612929;
 }

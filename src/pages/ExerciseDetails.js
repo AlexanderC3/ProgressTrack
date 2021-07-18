@@ -9,7 +9,7 @@ export const ExerciseDetail = (props) => {
   const [exerciseInfo, setExerciseInfo] = useState([]);
   const [totalSets, setTotalSets] = useState(0);
   const { register, handleSubmit } = useForm();
-  const { cat, exercises } = props;
+  const { cat, exercise } = props;
   const { user } = useSession();
   const params = useParams();
 
@@ -19,9 +19,7 @@ export const ExerciseDetail = (props) => {
   useEffect(() => {
     const catRef = firestore
       .collection("exercises")
-      .doc(cat)
-      .collection("catExercises")
-      .where("name", "==", exercises);
+      .where("name", "==", exercise);
 
     const unsubscribe = catRef.onSnapshot((querySnapshot) => {
       const exInfo = querySnapshot.docs.map((doc) => ({
@@ -32,7 +30,7 @@ export const ExerciseDetail = (props) => {
       setExerciseInfo(exInfo[0]);
     });
     return unsubscribe;
-  }, [cat, exercises]);
+  }, [cat, exercise]);
 
   const addSet = () => {
     setTotalSets(totalSets + 1);
@@ -72,8 +70,9 @@ export const ExerciseDetail = (props) => {
       regData.catName = catName;
       regData.exercise = exerciseInfo.id;
       regData.exerciseName = exerciseInfo.name;
-      regData.reps = repsweightArray;
+      regData.sets = repsweightArray;
       regData.date = new Date();
+      console.log(regData);
       await addRegistration(regData, user.uid);
     } catch (error) {
       console.log(error);

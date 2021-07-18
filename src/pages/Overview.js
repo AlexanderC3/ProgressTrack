@@ -103,8 +103,8 @@ const Overview = () => {
             sorting: false,
             render: (rowData) => (
               <div>
-                {rowData.reps
-                  ? rowData.reps.map((item, index) => {
+                {rowData.sets
+                  ? rowData.sets.map((item, index) => {
                       return (
                         <p key={index}>
                           <span style={{ fontSize: "12px" }}>&#9679; </span>

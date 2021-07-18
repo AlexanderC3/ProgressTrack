@@ -14,7 +14,7 @@ const Exercises = () => {
   id = id.charAt(0).toUpperCase() + id.slice(1);
 
   useEffect(() => {
-    const catRef = firestore.collection("exercises").where("name", "==", id);
+    const catRef = firestore.collection("categories").where("name", "==", id);
 
     const unsubscribe = catRef.onSnapshot((querySnapshot) => {
       const cat = querySnapshot.docs.map((doc) => ({
@@ -22,20 +22,19 @@ const Exercises = () => {
         ...doc.data(),
       }));
 
+      const categoryId = cat[0].id;
       setCatId(cat[0].id);
 
       const exercisesRef = firestore
         .collection("exercises")
-        .doc(cat[0].id)
-        .collection("catExercises")
-        .orderBy("name");
+        .where("categoryId", "==", categoryId);
 
       exercisesRef.onSnapshot((querySnapshot) => {
         const exercisesList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
+        exercisesList.sort((a, b) => (a.name > b.name ? 1 : -1));
         setExcercises(exercisesList);
       });
     });
@@ -74,7 +73,7 @@ const Exercises = () => {
           })}
         />
         {selectedExercise !== "" ? (
-          <ExerciseDetail cat={catId} exercises={selectedExercise} />
+          <ExerciseDetail cat={catId} exercise={selectedExercise} />
         ) : (
           ""
         )}

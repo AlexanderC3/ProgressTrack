@@ -9,6 +9,8 @@ import ActiveRedirect from "./router/ActiveRedirect";
 import Exercises from "./pages/Exercises";
 import Categories from "./pages/Categories";
 import Overview from "./pages/Overview";
+import Workouts from "./pages/Workouts";
+import WorkoutDetails from "./pages/WorkoutDetails";
 
 function App() {
   return (
@@ -23,10 +25,16 @@ function App() {
             <ActiveRedirect exact path="/profile" component={Profile} />
             <ActiveRedirect exact path="/overview" component={Overview} />
             <ActiveRedirect exact path="/exercises" component={Categories} />
+            <ActiveRedirect exact path="/workouts" component={Workouts} />
             <ActiveRedirect
               exact
               path="/exercises/:name"
               component={Exercises}
+            />
+            <ActiveRedirect
+              exact
+              path="/workouts/:name"
+              component={WorkoutDetails}
             />
             <Route exact path="/">
               <Redirect to="/login" />

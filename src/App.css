@@ -2931,9 +2931,9 @@ input:-webkit-autofill:active {
 /*Additionally, you can use this to change the text color:*/
 
 .datepicker input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+.datepicker input:-webkit-autofill:hover,
+.datepicker input:-webkit-autofill:focus,
+.datepicker input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255) inset !important;
 }
 

@@ -2,32 +2,28 @@ import React, { useEffect, useState } from "react";
 import { firestore } from "../firebase/config";
 import { Link } from "react-router-dom";
 
-const Categories = () => {
-  const [exercises, setExcercises] = useState([]);
+const Workouts = () => {
+  const [basicWorkouts, setBasicWorkouts] = useState([]);
+  //const [personalWorkouts, setPersonalWorkouts] = useState([]);
 
   useEffect(() => {
-    const exercisesRef = firestore.collection("categories").orderBy("name");
+    const basicWorkoutsRef = firestore.collection("workouts").orderBy("name");
 
-    const unsubscribe = exercisesRef.onSnapshot((querySnapshot) => {
-      const exercisesList = querySnapshot.docs.map((doc) => ({
+    const unsubscribe = basicWorkoutsRef.onSnapshot((querySnapshot) => {
+      const basicWorkoutsList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-
-      setExcercises(exercisesList);
+      setBasicWorkouts(basicWorkoutsList);
     });
     return unsubscribe;
   }, []);
 
-  const toLowercase = (string) => {
-    return string.toLowerCase();
-  };
-
   return (
     <div style={{ marginTop: "8em" }}>
       <div className="row" style={{ width: "85%", margin: "0 auto" }}>
-        {exercises
-          ? exercises.map((item, index) => {
+        {basicWorkouts
+          ? basicWorkouts.map((item, index) => {
               return (
                 <div
                   key={index}
@@ -39,7 +35,7 @@ const Categories = () => {
                 >
                   <Link
                     to={{
-                      pathname: `/exercises/${toLowercase(item.name)}`,
+                      pathname: `/workouts/${item.name}`,
                     }}
                   >
                     <div
@@ -63,18 +59,6 @@ const Categories = () => {
                         alt={item.name}
                         className="catImg"
                       />
-                      <div className="catInfo">
-                        <h4 className="muscleHeader">Target muscles</h4>
-                        {item.muscles
-                          ? item.muscles.map((muscle, index) => {
-                              return (
-                                <div key={index}>
-                                  <span>{muscle}</span>
-                                </div>
-                              );
-                            })
-                          : ""}
-                      </div>
                     </div>
                   </Link>
                 </div>
@@ -86,4 +70,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Workouts;

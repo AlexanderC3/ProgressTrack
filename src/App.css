@@ -3195,3 +3195,40 @@ input:-webkit-autofill {
   color: white;
   border: 2px solid #612929;
 }
+
+.swiper-slide {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.swiper-slide-active {
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+.swiper-container-horizontal > .swiper-pagination-progressbar,
+.swiper-container-vertical
+  > .swiper-pagination-progressbar.swiper-pagination-progressbar-opposite {
+  width: 20em !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+:root {
+  --swiper-theme-color: #6d34349a !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+
+.nextExercise {
+  border: 2px solid #612929 !important;
+  border-radius: 25px;
+  background: #612929 !important;
+  color: white !important;
+  font-size: 1.1em;
+  margin: 5px;
+  padding: 4px 7px;
+}

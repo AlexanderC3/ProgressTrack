@@ -20,7 +20,7 @@ const Workouts = () => {
   }, []);
 
   return (
-    <div style={{ marginTop: "8em" }}>
+    <div style={{ marginTop: "6em" }}>
       <div className="row" style={{ width: "85%", margin: "0 auto" }}>
         {basicWorkouts
           ? basicWorkouts.map((item, index) => {

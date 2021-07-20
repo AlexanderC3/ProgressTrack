@@ -28,13 +28,13 @@ const Navbar = () => {
       }}
     >
       <div
+        id="nav"
         style={{
           width: "100%",
           margin: "auto",
           position: "absolute",
           top: "0",
           background: "rgb(34 34 32)",
-          boxShadow: "0 5px 10px rgb(255 255 255 / 10%)",
         }}
       >
         <nav

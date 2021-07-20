@@ -19,7 +19,6 @@ const Profile = () => {
         ...doc.data(),
       }));
 
-      console.log(currentUser[0]);
       setUserData(currentUser[0]);
     });
     return unsubscribe;

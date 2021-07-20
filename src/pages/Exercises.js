@@ -5,13 +5,12 @@ import Select from "react-select";
 import { ExerciseDetail } from "./ExerciseDetails";
 
 const Exercises = () => {
-  const [exercises, setExcercises] = useState([]);
+  const [catExercises, setCatExcercises] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState("");
   const [catId, setCatId] = useState("");
   const params = useParams();
 
-  var id = params.name;
-  id = id.charAt(0).toUpperCase() + id.slice(1);
+  const id = params.name.charAt(0).toUpperCase() + params.name.slice(1);
 
   useEffect(() => {
     const catRef = firestore.collection("categories").where("name", "==", id);
@@ -34,8 +33,9 @@ const Exercises = () => {
           id: doc.id,
           ...doc.data(),
         }));
+
         exercisesList.sort((a, b) => (a.name > b.name ? 1 : -1));
-        setExcercises(exercisesList);
+        setCatExcercises(exercisesList);
       });
     });
     return unsubscribe;
@@ -50,13 +50,13 @@ const Exercises = () => {
   };
 
   return (
-    <div style={{ marginTop: "100px" }}>
+    <div style={{ marginTop: "100px", minHeight: "500px" }}>
       <h2>{id}</h2>
       <div style={{ width: "95%", margin: "auto" }}>
         <Select
           placeholder="Select an exercise"
           className="col-xl-4 col-lg-6 col-md-8 col-sm-12 selectBox"
-          options={exercises.map((name, id) => ({
+          options={catExercises.map((name, id) => ({
             value: name.id,
             label: name.name,
           }))}

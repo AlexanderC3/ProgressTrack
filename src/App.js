@@ -11,6 +11,7 @@ import Categories from "./pages/Categories";
 import Overview from "./pages/Overview";
 import Workouts from "./pages/Workouts";
 import WorkoutDetails from "./pages/WorkoutDetails";
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
   return (
@@ -22,19 +23,71 @@ function App() {
           <Switch>
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/login" component={Login} />
-            <ActiveRedirect exact path="/profile" component={Profile} />
-            <ActiveRedirect exact path="/overview" component={Overview} />
-            <ActiveRedirect exact path="/exercises" component={Categories} />
-            <ActiveRedirect exact path="/workouts" component={Workouts} />
-            <ActiveRedirect
+            <Route
+              exact
+              path="/profile"
+              render={() => (
+                <ActiveRedirect>
+                  <MainLayout>
+                    <Profile />
+                  </MainLayout>
+                </ActiveRedirect>
+              )}
+            />
+            <Route
+              exact
+              path="/overview"
+              render={() => (
+                <ActiveRedirect>
+                  <MainLayout>
+                    <Overview />
+                  </MainLayout>
+                </ActiveRedirect>
+              )}
+            />
+            <Route
+              exact
+              path="/exercises"
+              render={() => (
+                <ActiveRedirect>
+                  <MainLayout>
+                    <Categories />
+                  </MainLayout>
+                </ActiveRedirect>
+              )}
+            />
+            <Route
+              exact
+              path="/workouts"
+              render={() => (
+                <ActiveRedirect>
+                  <MainLayout>
+                    <Workouts />
+                  </MainLayout>
+                </ActiveRedirect>
+              )}
+            />
+            <Route
               exact
               path="/exercises/:name"
-              component={Exercises}
+              render={() => (
+                <ActiveRedirect>
+                  <MainLayout>
+                    <Exercises />
+                  </MainLayout>
+                </ActiveRedirect>
+              )}
             />
-            <ActiveRedirect
+            <Route
               exact
               path="/workouts/:name"
-              component={WorkoutDetails}
+              render={() => (
+                <ActiveRedirect>
+                  <MainLayout>
+                    <WorkoutDetails />
+                  </MainLayout>
+                </ActiveRedirect>
+              )}
             />
             <Route exact path="/">
               <Redirect to="/login" />

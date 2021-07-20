@@ -3,6 +3,7 @@ import { firestore } from "../firebase/config";
 import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { isMobile } from "react-device-detect";
+import Loader from "../components/Images/loader.gif";
 
 // Import Swiper styles
 import "swiper/swiper.min.css";
@@ -21,6 +22,7 @@ const WorkoutDetails = () => {
   const workout = params.name;
   const [swiperRef, setSwiperRef] = useState(null);
   var slidesPerPage = 3;
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const workoutRef = firestore
@@ -70,93 +72,109 @@ const WorkoutDetails = () => {
     swiperRef.slidePrev();
   };
 
+  setTimeout(() => {
+    setLoading(false);
+  }, 700);
+
   return (
     <div style={{ width: "90%", margin: "auto" }}>
-      <h3 style={{ marginTop: "4em" }}>Workout: {workout}</h3>
-      <Swiper
-        allowTouchMove={isMobile}
-        fadeEffect={true}
-        onSwiper={setSwiperRef}
-        slidesPerView={slidesPerPage}
-        centeredSlides={true}
-        spaceBetween={200}
-        pagination={{
-          type: "progressbar",
-        }}
-        navigation={true}
-        className="mySwiper"
-      >
-        {exercises
-          ? exercises.map((item, index) => {
-              return (
-                <SwiperSlide key={index}>
-                  <br />
-                  <div>
-                    Exercise {index + 1} / {exercises.length}
-                  </div>
-                  <div>
-                    <p>{item.name}</p>
-                  </div>
-                  <div>
-                    {" "}
-                    <img
-                      src={item.img}
-                      style={{
-                        height: "300px",
-                        width: "450px",
-                      }}
-                      alt={item.name}
-                    />
-                  </div>
-                  <div>
-                    {item.sets
-                      ? Array.from(Array(item.sets.length), (e, i) => {
-                          return (
-                            <div key={i} style={{ marginBottom: "20px" }}>
-                              <b style={{ fontSize: "1.1em" }}>
-                                Set {i + 1}: {item.sets[i]} reps
-                              </b>
-                              <div>
-                                <input
-                                  className="formInput"
-                                  type="number"
-                                  placeholder="Weight (kg)"
-                                  min="0"
-                                  name={"weight" + (i + 1)}
-                                  required
-                                  readOnly={false}
-                                />
+      <h3 style={{ marginTop: "1.5em" }}>Workout: {workout}</h3>
+      {!loading && (
+        <Swiper
+          allowTouchMove={isMobile}
+          fadeEffect={true}
+          onSwiper={setSwiperRef}
+          slidesPerView={slidesPerPage}
+          centeredSlides={true}
+          spaceBetween={200}
+          pagination={{
+            type: "progressbar",
+          }}
+          navigation={true}
+          className="mySwiper"
+        >
+          {exercises
+            ? exercises.map((item, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <br />
+                    <div>
+                      Exercise {index + 1} / {exercises.length}
+                    </div>
+                    <div>
+                      <p>{item.name}</p>
+                    </div>
+                    <div>
+                      {" "}
+                      <img
+                        src={item.img}
+                        style={{
+                          height: "300px",
+                          width: "450px",
+                        }}
+                        alt={item.name}
+                      />
+                    </div>
+                    <div>
+                      {item.sets
+                        ? Array.from(Array(item.sets.length), (e, i) => {
+                            return (
+                              <div key={i} style={{ marginBottom: "20px" }}>
+                                <b style={{ fontSize: "1.1em" }}>
+                                  Set {i + 1}: {item.sets[i]} reps
+                                </b>
+                                <div>
+                                  <input
+                                    className="formInput"
+                                    type="number"
+                                    placeholder="Weight (kg)"
+                                    min="0"
+                                    name={"weight" + (i + 1)}
+                                    required
+                                    readOnly={false}
+                                  />
+                                </div>
+                                <br />
                               </div>
-                              <br />
-                            </div>
-                          );
-                        })
-                      : ""}
-                  </div>
-                  <br />
-                  <br />
-                </SwiperSlide>
-              );
-            })
-          : ""}
-      </Swiper>
-      <div
-        style={{
-          display: "flex",
-          position: "absolute",
-          left: "50%",
-          transform: "translateX(-50%)",
-          bottom: "30px",
-          zIndex: "50",
-        }}
-      >
-        <button className="nextExercise" onClick={() => prevItem()}>
-          Prev exercise
-        </button>
-        <button className="nextExercise" onClick={() => nextItem()}>
-          Next exercise
-        </button>
-      </div>
+                            );
+                          })
+                        : ""}
+                    </div>
+                    <br />
+                    <br />
+                  </SwiperSlide>
+                );
+              })
+            : ""}
+        </Swiper>
+      )}
+      {loading && (
+        <img
+          alt="loader"
+          style={{ width: "30%", padding: "50px 0" }}
+          src={Loader}
+        />
+      )}
+      {!loading && (
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            bottom: "30px",
+            zIndex: "50",
+          }}
+        >
+          <button className="nextExercise" onClick={() => prevItem()}>
+            Prev exercise
+          </button>
+          <button className="nextExercise" onClick={() => nextItem()}>
+            Next exercise
+          </button>
+        </div>
+      )}
+      {loading && <div></div>}
     </div>
   );
 };

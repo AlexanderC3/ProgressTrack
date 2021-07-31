@@ -25,11 +25,24 @@ const Overview = () => {
         ...doc.data(),
       }));
 
-      for (let i = 0; i < registrations.length; i++) {
-        const date = registrations[i].date.toDate().toString();
-        registrations[i].date = moment(date).format("D MMM YYYY, H:mm:ss");
-      }
-      setRegs(registrations);
+      const categoryRef = firestore.collection("categories");
+
+      categoryRef.onSnapshot((querySnapshot) => {
+        const categoryList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        for (let i = 0; i < registrations.length; i++) {
+          const date = registrations[i].date.toDate().toString();
+          registrations[i].date = moment(date).format("D MMM YYYY, H:mm:ss");
+          var categoryName = categoryList.filter(function (item) {
+            return item.id === registrations[i].cat;
+          });
+          registrations[i].catName = categoryName[0].name;
+        }
+        setRegs(registrations);
+      });
     });
     return unsubscribe;
   }, [user.uid]);

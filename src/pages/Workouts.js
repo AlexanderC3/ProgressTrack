@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { firestore } from "../firebase/config";
 import { Link } from "react-router-dom";
+import { AddWorkout } from "../components/AddWorkout";
 
 const Workouts = () => {
   const [basicWorkouts, setBasicWorkouts] = useState([]);
@@ -21,6 +22,7 @@ const Workouts = () => {
 
   return (
     <div style={{ marginTop: "6em" }}>
+      <AddWorkout />
       <div className="row" style={{ width: "85%", margin: "0 auto" }}>
         {basicWorkouts
           ? basicWorkouts.map((item, index) => {

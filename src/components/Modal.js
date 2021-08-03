@@ -4,9 +4,13 @@ export const Modal = ({ hideModal, toggleModal, children }) => {
   if (hideModal) return null;
 
   return [
-    <div className="modalOverlay" onClick={() => toggleModal()} />,
-    <div className="modalWrap">
-      <div className="modal">{children}</div>
+    <div
+      key="overlay"
+      className="modalOverlay"
+      onClick={() => toggleModal()}
+    />,
+    <div key="form" className="modal">
+      {children}
     </div>,
   ];
 };

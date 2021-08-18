@@ -5,12 +5,12 @@ import MaterialTable from "material-table";
 import moment from "moment";
 import { delReg } from "../firebase/functions";
 import { CustomDatePicker } from "../components/CustomDatePicker";
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 
 const Overview = () => {
   const [regs, setRegs] = useState([]);
   const { user } = useSession();
-  const history = useHistory();
+  //const history = useHistory();
 
   useEffect(() => {
     const userRef = firestore
@@ -56,14 +56,19 @@ const Overview = () => {
   };
 
   return (
-    <div style={{ marginTop: "7em", width: "80%", margin: "8em auto" }}>
+    <div
+      className={"overview"}
+      style={{ marginTop: "5em", width: "80%", margin: "4em auto" }}
+    >
+      {/* 
       <h3 style={{ paddingBottom: ".3em" }}>Registrations overview</h3>
       <button onClick={() => history.goBack()} className="goBackButton">
         Go back
       </button>
+      */}
       <MaterialTable
         style={{ marginTop: "1.5em" }}
-        title={"Registrations"}
+        title={"Registrations overview"}
         data={regs}
         columns={[
           {

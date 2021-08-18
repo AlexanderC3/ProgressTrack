@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { firestore } from "../firebase/config";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { isMobile } from "react-device-detect";
 import Loader from "../components/Images/loader.gif";
@@ -20,6 +20,7 @@ import SwiperCore, { Pagination, Navigation } from "swiper/core";
 SwiperCore.use([Pagination, Navigation]);
 
 const WorkoutDetails = () => {
+  const [isCustom, setIsCustom] = useState(false);
   const [exercises, setExercises] = useState([]);
   const [allExercises, setAllExercises] = useState([]);
   const params = useParams();
@@ -36,40 +37,63 @@ const WorkoutDetails = () => {
       .collection("workouts")
       .where("name", "==", workout);
 
+    const customWorkoutRef = firestore
+      .collection("users")
+      .doc(user.uid)
+      .collection("workouts")
+      .where("name", "==", workout);
+
     const unsubscribe = workoutRef.onSnapshot((querySnapshot) => {
-      const workoutExercises = querySnapshot.docs.map((doc) => ({
+      var workoutExercises = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      const exercisesRef = firestore.collection("exercises");
-
-      exercisesRef.onSnapshot((querySnapshot) => {
-        const exercisesList = querySnapshot.docs.map((doc) => ({
+      customWorkoutRef.onSnapshot((querySnapshot) => {
+        const customWorkoutExercises = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
 
-        setAllExercises(exercisesList);
-
-        for (let i = 0; i < workoutExercises[0].exercises.length; i++) {
-          for (let j = 0; j < exercisesList.length; j++) {
-            if (
-              workoutExercises[0].exercises[i].exerciseId ===
-              exercisesList[j].id
-            ) {
-              workoutExercises[0].exercises[i].img = exercisesList[j].img;
-              workoutExercises[0].exercises[i].name = exercisesList[j].name;
-              workoutExercises[0].exercises[i].cat =
-                exercisesList[j].categoryId;
-            }
-          }
+        if (customWorkoutExercises.length > 0) {
+          workoutExercises = customWorkoutExercises;
+          setIsCustom(true);
         }
-        setExercises(workoutExercises[0].exercises);
+
+        const exercisesRef = firestore.collection("exercises");
+
+        exercisesRef.onSnapshot((querySnapshot) => {
+          const exercisesList = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          setAllExercises(exercisesList);
+
+          if (
+            workoutExercises[0].exercises !== null &&
+            workoutExercises[0].exercises !== undefined
+          ) {
+            for (let i = 0; i < workoutExercises[0].exercises.length; i++) {
+              for (let j = 0; j < exercisesList.length; j++) {
+                if (
+                  workoutExercises[0].exercises[i].exerciseId ===
+                  exercisesList[j].id
+                ) {
+                  workoutExercises[0].exercises[i].img = exercisesList[j].img;
+                  workoutExercises[0].exercises[i].name = exercisesList[j].name;
+                  workoutExercises[0].exercises[i].cat =
+                    exercisesList[j].categoryId;
+                }
+              }
+            }
+            setExercises(workoutExercises[0].exercises);
+          }
+        });
       });
     });
     return unsubscribe;
-  }, [workout]);
+  }, [workout, user.uid]);
 
   if (isMobile) {
     slidesPerPage = 1;
@@ -162,7 +186,16 @@ const WorkoutDetails = () => {
   return (
     <div style={{ width: "90%", margin: "auto" }}>
       <h3 style={{ marginTop: "1.5em" }}>Workout: {workout}</h3>
-      {!loading && (
+      {isCustom && (
+        <Link
+          to={{
+            pathname: `/editworkout/${workout}`,
+          }}
+        >
+          <p>Edit workout</p>
+        </Link>
+      )}
+      {!loading && exercises.length > 0 && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Swiper
             allowTouchMove={isMobile}
@@ -288,7 +321,7 @@ const WorkoutDetails = () => {
           src={Loader}
         />
       )}
-      {!loading && (
+      {!loading && exercises.length > 0 && (
         <div
           style={{
             display: "flex",

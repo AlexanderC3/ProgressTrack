@@ -12,6 +12,7 @@ import Overview from "./pages/Overview";
 import Workouts from "./pages/Workouts";
 import WorkoutDetails from "./pages/WorkoutDetails";
 import MainLayout from "./layouts/MainLayout";
+import { EditWorkout } from "./pages/EditWorkout";
 
 function App() {
   return (
@@ -85,6 +86,17 @@ function App() {
                 <ActiveRedirect>
                   <MainLayout>
                     <WorkoutDetails />
+                  </MainLayout>
+                </ActiveRedirect>
+              )}
+            />
+            <Route
+              exact
+              path="/editworkout/:workout"
+              render={() => (
+                <ActiveRedirect>
+                  <MainLayout>
+                    <EditWorkout />
                   </MainLayout>
                 </ActiveRedirect>
               )}

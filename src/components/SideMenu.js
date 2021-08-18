@@ -5,6 +5,11 @@ import MenuItem from "./MenuItem";
 
 export const menuItems = [
   {
+    name: "Dashboard",
+    to: `/dashboard`,
+    iconClassName: "fas fa-tachometer-alt",
+  },
+  {
     name: "Exercises",
     to: "/exercises",
     iconClassName: "fas fa-dumbbell",

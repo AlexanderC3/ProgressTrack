@@ -15,17 +15,24 @@ export const AddWorkout = () => {
     setFile(e.target.files[0]);
   };
 
+  const removeFile = async () => {
+    setFile(null);
+  };
+
   const onSubmit = async (data) => {
     const workoutName = data.name;
     try {
-      const storageRef = storage.ref();
-      const fileRef = storageRef.child(file.name);
-      await fileRef.put(file);
-      const fileUrl = await fileRef.getDownloadURL();
-
       const workoutData = {};
       workoutData.name = workoutName;
-      workoutData.img = fileUrl;
+
+      if (file !== null) {
+        const storageRef = storage.ref();
+        const fileRef = storageRef.child(file.name);
+        await fileRef.put(file);
+        const fileUrl = await fileRef.getDownloadURL();
+        workoutData.img = fileUrl;
+      }
+
       await createPersonalWorkout(workoutData, user.uid);
     } catch (error) {
       console.log(error);
@@ -39,6 +46,7 @@ export const AddWorkout = () => {
 
   const toggleModal = () => {
     setHideModal(!hideModal);
+    setFile(null);
   };
 
   const configModal = {
@@ -47,7 +55,7 @@ export const AddWorkout = () => {
   };
 
   return (
-    <div style={{ marginTop: "8em" }}>
+    <div style={{ marginTop: "7em" }}>
       <div onClick={() => toggleModal()} className="addWorkout">
         + New workout
       </div>
@@ -66,17 +74,37 @@ export const AddWorkout = () => {
               ref={register}
             />
           </div>
-          <div>
-            <label htmlFor="workoutImg">
-              Add image
-              <input
-                type="file"
-                id="workoutImg"
-                style={{ display: "none" }}
-                onChange={onFileChange}
+          <br />
+          {file !== null ? (
+            <div>
+              <p style={{ fontSize: "1.1em" }}>
+                {file.name}{" "}
+                <i
+                  onClick={() => removeFile()}
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                  className="fas fa-trash-alt"
+                ></i>
+              </p>
+              <img
+                src={URL.createObjectURL(file)}
+                alt="newWorkout"
+                style={{ width: "70%", borderRadius: "25px" }}
               />
-            </label>
-          </div>
+            </div>
+          ) : (
+            <div>
+              <label htmlFor="workoutImg">
+                Add image
+                <input
+                  type="file"
+                  id="workoutImg"
+                  style={{ display: "none" }}
+                  onChange={onFileChange}
+                />
+              </label>
+            </div>
+          )}
+          <br />
           <div>
             <button type="submit">Submit</button>
           </div>

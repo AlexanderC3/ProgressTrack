@@ -2,30 +2,50 @@ import React, { useEffect, useState } from "react";
 import { firestore } from "../firebase/config";
 import { Link } from "react-router-dom";
 import { AddWorkout } from "../components/AddWorkout";
+import { useSession } from "../firebase/UserProvider";
 
 const Workouts = () => {
-  const [basicWorkouts, setBasicWorkouts] = useState([]);
-  //const [personalWorkouts, setPersonalWorkouts] = useState([]);
+  const [workouts, setWorkouts] = useState([]);
+  const { user } = useSession();
 
   useEffect(() => {
     const basicWorkoutsRef = firestore.collection("workouts").orderBy("name");
+    const personalWorkoutsRef = firestore
+      .collection("users")
+      .doc(user.uid)
+      .collection("workouts")
+      .orderBy("name");
 
     const unsubscribe = basicWorkoutsRef.onSnapshot((querySnapshot) => {
       const basicWorkoutsList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setBasicWorkouts(basicWorkoutsList);
+
+      personalWorkoutsRef.onSnapshot((querySnapshot) => {
+        const personalWorkoutsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        if (personalWorkoutsList.length > 0) {
+          setWorkouts(basicWorkoutsList.concat(personalWorkoutsList));
+        } else {
+          setWorkouts(basicWorkoutsList);
+        }
+      });
     });
     return unsubscribe;
-  }, []);
+  }, [user.uid]);
 
   return (
-    <div style={{ marginTop: "6em" }}>
+    <div style={{ marginTop: "6em", minHeight: "70vh" }}>
       <AddWorkout />
-      <div className="row" style={{ width: "85%", margin: "0 auto" }}>
-        {basicWorkouts
-          ? basicWorkouts.map((item, index) => {
+      <div
+        className="row workoutsRow"
+        style={{ width: "85%", margin: "0 auto" }}
+      >
+        {workouts
+          ? workouts.map((item, index) => {
               return (
                 <div
                   key={index}
@@ -45,18 +65,25 @@ const Workouts = () => {
                       style={{
                         position: "relative",
                         borderRadius: "15px",
-                        background:
-                          "linear-gradient(145deg, #f53803 0%, #ff4e00 100%)",
                         overflow: "hidden",
+                        objectFit: "cover",
+                        height: "100%",
                       }}
                     >
-                      <h3 className="catHeader">{item.name}</h3>
+                      <h3 className="catHeader2">{item.name}</h3>
                       <img
-                        src={item.img}
+                        src={
+                          item.img
+                            ? item.img
+                            : "https://firebasestorage.googleapis.com/v0/b/progresstrack-887cb.appspot.com/o/workoutDefault.png?alt=media&token=f14f722f-f4c0-4903-9ceb-cd4628994dd6"
+                        }
                         style={{
                           width: "100%",
                           borderRadius: "15px",
                           opacity: ".9",
+                          minHeight: "calc(13.5em + 4vw)",
+                          maxHeight: "300px",
+                          objectFit: "cover",
                         }}
                         alt={item.name}
                         className="catImg"

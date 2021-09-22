@@ -1,5 +1,7 @@
 import React from "react";
 
+//Deze module zorgt voor het minischerm dat geopent wordt bij het klikken op bepaalde buttons.
+
 export const Modal = ({ hideModal, toggleModal, children }) => {
   if (hideModal) return null;
 

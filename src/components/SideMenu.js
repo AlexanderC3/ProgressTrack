@@ -3,6 +3,7 @@ import logo from "../components/Images/apple-touch-icon.png";
 import { isMobile } from "react-device-detect";
 import MenuItem from "./MenuItem";
 
+//per menu-item wordt een object toegevoegd in deze JSON: naam, to (url), icon en eventuele subitems in subMenus.
 export const menuItems = [
   {
     name: "Dashboard",
@@ -35,10 +36,12 @@ export const menuItems = [
 ];
 
 const SideMenu = (props) => {
+  //isMobile --> wanneer de website bekeken wordt op een mobiel scherm zal de sidebar bij default ingeklapt zijn.
   const [inactive, setInactive] = useState(isMobile);
 
   useEffect(() => {
     if (inactive) {
+      //submenus worden ingeklapt.
       removeActiveClassFromSubMenu();
     }
 

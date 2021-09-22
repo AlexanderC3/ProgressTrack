@@ -14,6 +14,11 @@ import WorkoutDetails from "./pages/WorkoutDetails";
 import MainLayout from "./layouts/MainLayout";
 import { EditWorkout } from "./pages/EditWorkout";
 
+//Implementeren van alle modules binnenin de pages folder. Als eerste wordt de UserProvider geladen (data van ingelogde user zie UserProvider.js).
+//Vervolgens BrowserRouter (default nodig)
+//Daarna wordt de bovenst navbar geladen.
+//Switch zorgt ervoor dat er gewisseld kan worden tussen de verschillende modules (anders zou maar 1 pagina geladen kunnen worden).
+
 function App() {
   return (
     <UserProvider>

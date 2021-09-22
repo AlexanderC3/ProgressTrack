@@ -5,6 +5,9 @@ import { useForm } from "react-hook-form";
 import { createCat } from "../firebase/functions";
 import { Modal } from "../components/Modal";
 
+// !Deze module wordt niet gebruikt, hiermee heb ik AddWorkout opgesteld -> het toevoegen van een afbeelding in de storage functie van firebase.
+// Todo: uiteindelijk deze file verwijderen.
+
 const AddImageToStorage = () => {
   const [exercises, setExcercises] = useState([]);
   const [fileUrl, setFileUrl] = React.useState(null);

@@ -3542,3 +3542,11 @@ input:-webkit-autofill {
 .MTableToolbar-searchField-10 {
   width: 25em !important;
 }
+
+.editWorkout {
+  color: #222 !important;
+}
+
+.editWorkout:hover {
+  text-decoration: none !important;
+}

@@ -6,6 +6,9 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 
+//Deze module zorgt voor de datepicker in de overview tabel, deze code komt van stackoverflow ...
+//en wordt geïmplementeerd in Overview.js (filterComponent: (props) => <CustomDatePicker {...props} /> )
+
 export const CustomDatePicker = (props) => {
   const [date, setDate] = useState(null);
 

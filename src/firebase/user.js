@@ -1,5 +1,7 @@
 import { firestore } from "./config";
 
+//functies met betrekking tot het aanmaken of wijzigen van een user.
+
 export const createUserDocument = async (user) => {
   // get a reference to the firestore document
   const docRef = firestore.doc(`/users/${user.uid}`);

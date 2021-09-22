@@ -10,6 +10,10 @@ const Exercises = () => {
   const [catId, setCatId] = useState("");
   const params = useParams();
 
+  //Wanneer de exercises opgevraagd worden van de abs categorie zal dit de url zijn: ../exercises/abs met abs een variabele in de App.js file waarbij het path /exercises:name is.
+  //Hierdoor kunnen we met useParams deze waarde opslaan. Dit betekent dat in dit geval de waarde van params gelijk is aan "abs".
+  //! Het probleem is nu dat de categorieën in de database beginnen met een hoofdletter, wat opgelost wordt in de volgende regel.
+
   const id = params.name.charAt(0).toUpperCase() + params.name.slice(1);
 
   useEffect(() => {
@@ -41,6 +45,7 @@ const Exercises = () => {
     return unsubscribe;
   }, [id]);
 
+  //Op basis van de geselecteerde value uit <Select> wordt deze value opgeslagen in de selectedExercise variabele (onChange attribatuut in de Select)
   const handleExerciseChange = (selection) => {
     if (!!selection) {
       setSelectedExercise(selection.label);
@@ -72,6 +77,7 @@ const Exercises = () => {
             },
           })}
         />
+        {/* Als er een exercise geselecteerd is wordt nu de ExerciseDetail module geladen met properties catId en geselecteerde exercise */}
         {selectedExercise !== "" ? (
           <ExerciseDetail cat={catId} exercise={selectedExercise} />
         ) : (

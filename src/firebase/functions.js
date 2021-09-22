@@ -1,12 +1,10 @@
 import { firestore } from "./config";
 
-// Functie die zorgt voor het aanmaken en wijzigen van een batch
-
 export const createCat = async (cat) => {
   // get a reference to the firestore document
   const docRef = firestore.collection("exercises");
 
-  // write to CLoud Firestore
+  // write to Cloud Firestore
   return docRef.add(cat);
 };
 

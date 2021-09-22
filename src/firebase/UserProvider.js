@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext, createContext } from "react";
 import firebase from "firebase/app";
 
+//Deze module zorgt ervoor dat het altijd mogelijk is de uid, email ... van de ingelogde user op te vragen en te gebruiken.
+
 export const UserContext = React.createContext();
 export const UserProvider = (props) => {
   const [session, setSession] = useState({

@@ -3,6 +3,8 @@ import { Route, Redirect } from "react-router-dom";
 import { firestore } from "../firebase/config";
 import { useSession } from "../firebase/UserProvider";
 
+//Code die ervoor zorgt dat bepaalde paginas enkel zichtbaar zijn wanneer een gebruiker ingelogd is. Wordt duidelijk overlopen in playlist op linkedin learning.
+
 const ActiveRedirect = ({ component: Component, ...rest }) => {
   const { user } = useSession();
   const [activeUser, setActiveUser] = useState(false);

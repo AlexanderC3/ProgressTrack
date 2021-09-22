@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { addRegistration } from "../firebase/functions";
 import { useSession } from "../firebase/UserProvider";
 
+//! Zal later grondig gedocumenteerd worden.
+
 // Import Swiper styles
 import "swiper/swiper.min.css";
 import "swiper/components/pagination/pagination.min.css";
@@ -188,6 +190,7 @@ const WorkoutDetails = () => {
       <h3 style={{ marginTop: "1.5em" }}>Workout: {workout}</h3>
       {isCustom && (
         <Link
+          className="editWorkout"
           to={{
             pathname: `/editworkout/${workout}`,
           }}

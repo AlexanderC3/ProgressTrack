@@ -6,14 +6,17 @@ const Categories = () => {
   const [exercises, setExcercises] = useState([]);
 
   useEffect(() => {
+    //referentie leggen naar de database en meer bepaalde de collectie categories geördent op naam.
     const exercisesRef = firestore.collection("categories").orderBy("name");
 
+    //Data ophalen en opslaan in exerciseList
     const unsubscribe = exercisesRef.onSnapshot((querySnapshot) => {
       const exercisesList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
+      //Data wordt opgeslagen in exercises zodat deze data niet verloren gaat. Eenmaal uit de useEffect zou de data verloren zijn zonder het gebruik van een state.
       setExcercises(exercisesList);
     });
     return unsubscribe;
@@ -29,6 +32,8 @@ const Categories = () => {
         className="row catOverview"
         style={{ width: "85%", margin: "0 auto" }}
       >
+        {/*Als er waarden zitten in de exercises array worden deze hier geloopt.
+        // Merk op dat zaken tussen {} parameters voorstellen zo is bijvoorbeeld {item.name} de naam van de categorie*/}
         {exercises
           ? exercises.map((item, index) => {
               return (

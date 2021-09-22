@@ -4,6 +4,8 @@ import { signup } from "../firebase/auth";
 import { useHistory } from "react-router-dom";
 import { useSession } from "../firebase/UserProvider";
 
+//Signup pagina
+
 function Signup(props) {
   const { register, handleSubmit, reset } = useForm();
   const [isLoading, setLoading] = useState(false);

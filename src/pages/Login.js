@@ -4,6 +4,8 @@ import { login } from "../firebase/auth";
 import { Link } from "react-router-dom";
 import { useSession } from "../firebase/UserProvider";
 
+//Login pagina
+
 function Login(props) {
   const { register, handleSubmit, reset } = useForm();
   const [isLoading, setLoading] = useState(false);
@@ -37,6 +39,8 @@ function Login(props) {
     }
   };
   const formClassName = `${isLoading ? "loading" : ""}`;
+
+  //! Deze 3 functies evenals de window.addEventListeners worden gebruikt voor de effecten met de input velden
 
   function addcl() {
     let parent = this.parentNode.parentNode;

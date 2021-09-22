@@ -3,6 +3,8 @@ import { firestore } from "../firebase/config";
 import { useSession } from "../firebase/UserProvider";
 import { useHistory } from "react-router-dom";
 
+// Hier gebeurt niet zoveel user data wordt opgehaald en weergegeven
+
 const Profile = () => {
   const [userData, setUserData] = useState([]);
   const { user } = useSession();
@@ -27,6 +29,7 @@ const Profile = () => {
   return (
     <div style={{ marginTop: "7em", width: "80%", margin: "8em auto" }}>
       <h3 style={{ paddingBottom: ".3em" }}>My Profile</h3>
+      {/* Met history.goback() kan je terug gaan naar de vorige url */}
       <button onClick={() => history.goBack()} className="goBackButton">
         Go back
       </button>

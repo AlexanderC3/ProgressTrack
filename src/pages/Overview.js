@@ -139,6 +139,7 @@ const Overview = () => {
             field: "date",
             type: "date",
             dateSetting: { locale: "ko-KR" },
+            //Laden van custom filter in CustomDatePicker.js
             filterComponent: (props) => <CustomDatePicker {...props} />,
             cellStyle: {
               textAlign: "center",

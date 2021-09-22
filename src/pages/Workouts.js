@@ -9,6 +9,7 @@ const Workouts = () => {
   const { user } = useSession();
 
   useEffect(() => {
+    // er zijn 2 soorten workouts: default workouts en eigen workouts
     const basicWorkoutsRef = firestore.collection("workouts").orderBy("name");
     const personalWorkoutsRef = firestore
       .collection("users")
@@ -28,6 +29,7 @@ const Workouts = () => {
           ...doc.data(),
         }));
         if (personalWorkoutsList.length > 0) {
+          //wanneer er eigen workouts zijn, worden deze toegevoegd aan de workouts variabele
           setWorkouts(basicWorkoutsList.concat(personalWorkoutsList));
         } else {
           setWorkouts(basicWorkoutsList);
@@ -39,6 +41,7 @@ const Workouts = () => {
 
   return (
     <div style={{ marginTop: "6em", minHeight: "70vh" }}>
+      {/* Toevoegen van de + new workout knop die geïmplementeerd wordt in AddWorkout.js */}
       <AddWorkout />
       <div
         className="row workoutsRow"
@@ -71,6 +74,7 @@ const Workouts = () => {
                       }}
                     >
                       <h3 className="catHeader2">{item.name}</h3>
+                      {/* Wanneer er een afbeelding meegegeven werd, wordt deze weergegeven anders wordt een default afbeelding gebruikt. */}
                       <img
                         src={
                           item.img

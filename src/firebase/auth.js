@@ -2,6 +2,8 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { createUserDocument } from "./user";
 
+//authenticatie functies met firebase authenticatie.
+
 export const signup = async ({ firstname, lastname, email, password }) => {
   const resp = await firebase
     .auth()

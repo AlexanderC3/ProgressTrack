@@ -65,7 +65,7 @@ const Navbar = () => {
               style={{ fontSize: "1.3em" }}
             ></i>
           </button>
-
+          {/*Als er geen user is zal de navbar de opties geven om in te loggen of te registreren */}
           {!user && (
             <div
               className="collapse navbar-collapse"
@@ -88,6 +88,7 @@ const Navbar = () => {
               </ul>
             </div>
           )}
+          {/*Als er wel een user ingelogd is heb je de opties om je profiel te bekijken of uit te loggen */}
           {!!user && (
             <div
               className="collapse navbar-collapse"

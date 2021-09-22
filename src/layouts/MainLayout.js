@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import SideMenu from "../components/SideMenu";
 
+//Toevoegen van de sidebar aan paginas waar dat nodig is.
+
 const MainLayout = (props) => {
   const [inactive, setInactive] = useState(false);
 

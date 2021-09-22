@@ -9,6 +9,7 @@ export const ExerciseDetail = (props) => {
   const [exerciseInfo, setExerciseInfo] = useState([]);
   const [totalSets, setTotalSets] = useState(0);
   const { register, handleSubmit } = useForm();
+  // Deze module wordt gebruikt binnen Exercises.js waardoor hier de properties cat(categorie) en exercise opgehaald kunnen worden uit de Exercises module.
   const { cat, exercise } = props;
   const { user } = useSession();
   const params = useParams();
@@ -45,6 +46,10 @@ export const ExerciseDetail = (props) => {
     var weightArray = [];
     var repsweightArray = [];
 
+    //Het is niet gemakkelijk om meteen een gewicht aan een set te linken. Daardoor wordt hier de verschillende aantal sets overlopen en opgeslagen in de array repsArray.
+    //Hetzelfde geldt voor de de verschillende gewicht waarden. (const [key, value] of Object.entries(data) met data de data opgehaald uit de form).
+    //De eerste waarde die ingegeven werd zal ook nu de eerste index hebben in de array.
+
     for (const [key, value] of Object.entries(data)) {
       if (key.includes("totalReps")) {
         repsArray.push(Number(value));
@@ -56,6 +61,8 @@ export const ExerciseDetail = (props) => {
         weightArray.push(Number(value));
       }
     }
+
+    //Nu worden de values aan elkaar gelinkt. Juiste gewicht bij juiste set en opgeslagen in de repsWeightArray array.
 
     for (let i = 0; i < repsArray.length; i++) {
       repsweightArray.push({
@@ -115,6 +122,7 @@ export const ExerciseDetail = (props) => {
         style={{ width: "100%", maxWidth: "600px", margin: "auto" }}
         onSubmit={handleSubmit(onSubmit)}
       >
+        {/* Afhankelijk van een aantal sets (totalsets variabele) wordt deze return meerdere keren weergegeven (totalsets aantal keren) => Array.from(Array(totalSets) ...)*/}
         {totalSets > 0
           ? Array.from(Array(totalSets), (e, i) => {
               return (
